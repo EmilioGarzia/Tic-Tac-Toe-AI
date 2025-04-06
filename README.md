@@ -8,15 +8,18 @@ This project is an educational implementation of the Tic-Tac-Toe game, featuring
   - **Minimax**: A brute-force algorithm that explores all possible moves to determine the optimal strategy.
     - $\text{Time Complexity} = O\left(b^d\right)$
     - $\text{Space Complexity} = O(bd)$
+    
     ℹ: $b$ is number of legal moves in that moment, $d$ is the max depth of the decision tree
   - **Alpha-Beta Pruning**: An optimized version of Minimax that reduces the number of nodes evaluated in the search tree.
     - $\text{Time Complexity} = O\left(b^{\frac{d}{2}}\right)$
     - $\text{Space Complexity} = O(bd)$
+    
     ℹ: $b$ is number of legal moves in that moment, $d$ is the max depth of the decision tree
 - **Difficulty Levels**:
   - **High**: Optimal moves are always chosen.
   - **Medium**: A mix of optimal and suboptimal moves.
   - **Low**: Randomized suboptimal moves to simulate uncertainty.
+  
   ⚠️: If you use **Alpha-Beta Pruning** as CPU algorithm, the choice of smart level is quite useless, because the structure of this algorithm prune many non optimal branches, this leads to choose the best action, independently from your fixed smart level
 - **Game Modes**:
   - **CPU vs CPU**: Watch two AI players compete.
