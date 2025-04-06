@@ -9,11 +9,11 @@
 - [Clone the repo](#clone-the-repo)
 - [Open directory project](#open-directory-project)
 - [Launch the main script](#launch-the-main-script)
+	- [How to manage the smart level](#how-to-manage-the-smart-level)
 	- [Main class implemented entities](#main-class-implemented-entities)
 		- [Attributes](#attributes)
 		- [Costants](#costants)
 		- [Methods](#methods)
-	- [How to manage the smart level](#how-to-manage-the-smart-level)
 	- [Author](#author)
 <!-- toc end [do not erase this comment] -->
 
@@ -56,6 +56,27 @@ cd Tic-Tac-Toe-AI
 python main.py
 ```
 
+## How to manage the smart level
+
+You can handle the smart level of the AI algorithm, to do this, you have to set the top $n$ best actions collected during the algorithm recursion, so change the values into `__top_n_actions__()` method. I suggest you to avoid to change the `HIGH` level, otherwise, you loose the optimality of the algorithm. Below an example of setting.
+
+```python
+def __top_n_actions__(self, actions, smart_level):
+        if smart_level == self.HIGH:
+            top_n = 1  # optimal choice
+        elif smart_level == self.MEDIUM:
+            top_n = 5  # MEDIUM smart level
+        elif smart_level == self.LOW:
+            top_n = 10 # LOW smart level
+        else:
+            top_n = 1
+        
+        top_n_actions = actions[:top_n]
+        return random.choice(top_n_actions)[1]
+```
+
+> ⚠️: Higher values denotes lower smart levels, and viceversa
+
 ## Main class implemented entities
 The core of the program is contained inside the class `TicTacToe`, below I've reported all definition of this class.
 
@@ -82,10 +103,25 @@ The core of the program is contained inside the class `TicTacToe`, below I've re
 - `HIGH`: indicates that the smart level of the AI algorithm is high (always the optimal action)
 
 ### Methods
-> [todo]
 
-## How to manage the smart level
-> [todo]
+- `player()`: Returns the current player (`PLAYER1` or `PLAYER2`) based on the move count.
+- `actions()`: Returns a list of all valid moves (i.e., empty cells) on the board.
+- `result(action)`: Applies a valid move to the board and updates the move count.
+- `result_simulated(action)`: Simulates a move and returns a new game state without modifying the original.
+- `minimax(smart_level=302)`: Executes the Minimax algorithm with a configurable difficulty level. Returns the chosen move.
+- `alpha_beta_pruning(smart_level=302)`: An optimized version of Minimax with alpha-beta pruning for better performance.
+- `__top_n_actions__(actions, smart_level)`: Internal method that randomly selects one of the top actions based on the AI smart level (HIGH, MEDIUM, LOW).
+- `terminal()`: Checks if the game has ended. Returns a tuple with end status, win type, and winning coordinates.
+- `utility()`: Returns the numerical result of the game: `PLAYER1`, `PLAYER2`, or `DRAW`.
+- `print_mapping()`: Displays the board's coordinate mapping to assist the player in choosing cell positions.
+- `print_field()`: Prints the current state of the game board in a readable format.
+- `restart()`: Resets the game to the initial state.
+- `set_player_symbol(player_number, symbol)`: Allows customization of the players’ symbols.
+- `cpu_vs_cpu_AI_simulation(smart_level=302, print_moves=False, algorithm=200)`: Simulates a game between two AIs using either Minimax or Alpha-Beta. Measures execution time.
+- `player_vs_cpu(smart_level=302, player1=True)`: Allows a human player to play against the CPU. Player can choose to go first or second.
+- `player_vs_player()`: Enables a human vs human game session.
+- `print_insights(stop_term=True, winner_coords=True, elapsed_time=True)`: Prints game statistics including win type, winner, winning coordinates, and duration.
+- `__checkMonovaluesArray__(vector, verbose=False)`: Static helper method to verify if all elements in a list are the same (used for win conditions).
 
 ## Author
 Emilio Garzia, 2025
