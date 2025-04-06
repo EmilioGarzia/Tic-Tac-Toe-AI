@@ -20,6 +20,8 @@ This project is an educational implementation of the Tic-Tac-Toe game, featuring
 
 ## Features
 
+test
+
 ### AI Algorithms
 
 - **Minimax**: A brute-force algorithm that explores all possible moves to determine the optimal strategy.
