@@ -7,6 +7,7 @@ Tic-Tac-Toe: using Minimax algorithm
 
 import copy
 import random
+import time
 
 class TicTacToe:
     def __init__(self):
@@ -58,6 +59,7 @@ class TicTacToe:
             self.moves += 1
         else:
             print("The choosed move is illegal, or you tries to fill a non empty cell!")
+            return None
 
     """
     Version of result() method which not change the state of the field,
@@ -108,6 +110,61 @@ class TicTacToe:
             _, action = min_value(self)
         return action
 
+    """
+    Alpha-Beta Pruning algorithm
+    """
+    def alpha_beta_pruning(self, smart_level=302):
+        if self.terminal()[0]:
+            return None  # Trivial case
+
+        def max_value(state, alpha, beta):
+            if state.terminal()[0]:
+                return state.utility(), None
+            value = float("-inf")
+            best_actions = []
+            for action in state.actions():
+                new_state = state.result_simulated(action)
+                score, _ = min_value(new_state, alpha, beta)
+                if score > value:
+                    value = score
+                    best_actions = [(score, action)]
+                elif score == value:
+                    best_actions.append((score, action))
+                alpha = max(alpha, value)
+                if beta <= alpha:
+                    break
+            return value, self.__top_n_actions__(best_actions, smart_level)
+
+        def min_value(state, alpha, beta):
+            if state.terminal()[0]:
+                return state.utility(), None
+            value = float("inf")
+            best_actions = []
+            for action in state.actions():
+                new_state = state.result_simulated(action)
+                score, _ = max_value(new_state, alpha, beta)
+                if score < value:
+                    value = score
+                    best_actions = [(score, action)]
+                elif score == value:
+                    best_actions.append((score, action))
+                beta = min(beta, value)
+                if beta <= alpha:
+                    break
+            return value, self.__top_n_actions__(best_actions, smart_level)
+
+        current_player = self.player()
+        if current_player == self.PLAYER1:
+            _, action = max_value(self, float("-inf"), float("inf"))
+        else:
+            _, action = min_value(self, float("-inf"), float("inf"))
+        return action
+
+    """
+    @Support method
+    Choose the top_n best actions randomly in order to 
+        reduce the optimality of the algorithm
+    """
     def __top_n_actions__(self, actions, smart_level):
         if smart_level == self.HIGH:
             top_n = 1  # optimal choice
@@ -120,7 +177,6 @@ class TicTacToe:
         
         top_n_actions = actions[:top_n]
         return random.choice(top_n_actions)[1]
-        
 
     """
     Check if the game has ended after a move
@@ -241,6 +297,8 @@ class TicTacToe:
     Simulation of a match where the opponents are CPUs
     """
     def cpu_vs_cpu_AI_simulation(self, smart_level=302, print_moves=False, algorithm=200):
+        self.restart()
+        start_time = time.time()
         if algorithm == self.MINIMAX:
             while not self.terminal()[0]:
                 action = self.minimax(smart_level=smart_level)
@@ -249,8 +307,67 @@ class TicTacToe:
                     print(f"----- Move: #{self.moves} -----")
                     self.print_field()
         if algorithm == self.ALPHA_BETA_PRUNING:
-            pass
+            while not self.terminal()[0]:
+                action = self.alpha_beta_pruning(smart_level=smart_level)
+                self.result(action=action)
+                if print_moves:
+                    print(f"----- Move: #{self.moves} -----")
+                    self.print_field()
+        end_time = time.time()
+        self.elapsed_time = (end_time-start_time)*1000
+        
+    """
+    Try yourself the AI algorithms, playing a game as opponent
+    """
+    def player_vs_cpu(self, smart_level=302, player1=True):
+        self.restart()
+        start_time = time.time()
+        if player1:
+            while not self.terminal()[0]:
+                row, col = map(int, input("Player: specify row and column, separate using space: ").split())
+                while self.result_simulated(action=[row, col]) is None:
+                    print("Invalid move or cell already fill, please try again!")
+                    row, col = map(int, input("Player: specify row and column, separate using space: ").split())
+                self.result(action=[row, col])
+                print()
+                self.print_field()
+                cpu_action = self.minimax(smart_level=smart_level)
+                self.result(action=cpu_action)
+                print()
+                self.print_field()
+        else:
+            while not self.terminal()[0]:
+                cpu_action = self.minimax(smart_level=smart_level)
+                self.result(action=cpu_action)
+                print()
+                self.print_field()
                 
+                if self.terminal()[0]: break
+
+                row, col = map(int, input("Player: specify row and column, separate using space: ").split())
+                while self.result_simulated(action=[row, col]) is None:
+                    print("Invalid move or cell already fill, please try again!")
+                    row, col = map(int, input("Player: specify row and column, separate using space: ").split())
+                self.result(action=[row, col])
+                print()
+                self.print_field()
+        end_time = time.time()
+        self.elapsed_time = (end_time-start_time)*1000
+
+    """
+    Start a game where the both opponents are humans
+    """
+    def player_vs_player(self):
+        self.restart()
+        start_time = time.time()
+        while not self.terminal()[0]:
+            player = self.player1_symbol if self.player() == self.PLAYER1 else self.player2_symbol
+            row, col = map(int, input(f"{player}: specify row and column, separate using space: ").split())
+            self.result(action=[row, col])
+            self.print_field()
+        end_time = time.time()
+        self.elapsed_time = (end_time-start_time)*1000
+
     """
     Print stats about played game, 
     """
@@ -273,13 +390,13 @@ class TicTacToe:
             if winner_coords:
                 if end_term != self.DRAW:
                     if self.field_state[coords[0][0]][coords[0][1]] == self.PLAYER1:
-                        print(f"The winner is: {self.PLAYER1}")
+                        print(f"The winner is: {self.player1_symbol}")
                     else:
-                        print(f"The winner is: {self.PLAYER2}")
+                        print(f"The winner is: {self.player2_symbol}")
                     print(f'Winner coordinates: {coords}')
             
             if elapsed_time and self.elapsed_time is not None:
-                print(f"Game duration: {self.elapsed_time}ms")
+                print(f"Game duration: {round(self.elapsed_time,2)}ms")
         else:
             print("Tha game hasn't ended, invoke this method when the game has ended!")
 
