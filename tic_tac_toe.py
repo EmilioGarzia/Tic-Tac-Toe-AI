@@ -169,9 +169,9 @@ class TicTacToe:
         if smart_level == self.HIGH:
             top_n = 1  # optimal choice
         elif smart_level == self.MEDIUM:
-            top_n = 10
+            top_n = 2
         elif smart_level == self.LOW:
-            top_n = 30
+            top_n = 3
         else:
             top_n = 1
         
@@ -248,6 +248,20 @@ class TicTacToe:
                 return self.PLAYER1
             elif(self.field_state[winner_coords[0][0]][winner_coords[0][1]] == self.PLAYER2):
                 return self.PLAYER2
+
+    """
+    Print mapping of the field
+    """
+    print("Game's field mapping, use it to specify the coordinates of the cell!")
+    def print_mapping(self):
+        i = 0
+        for cells in self.field_state:
+            j = 0
+            for cell in cells:
+                print(f"[{i} {j}] ", end=" ")
+                j += 1
+            print()
+            i += 1
 
     """
     Print game's field

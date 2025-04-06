@@ -5,10 +5,13 @@ if __name__ == "__main__":
     game = TicTacToe()
     
     # Start CPU vs CPU game simulation
-    game.cpu_vs_cpu_AI_simulation(print_moves=True, algorithm=game.MINIMAX, smart_level=game.HIGH)
-    
+    #game.cpu_vs_cpu_AI_simulation(print_moves=True, algorithm=game.MINIMAX, smart_level=game.MEDIUM)
+
+    # Print mapping of the board
+    game.print_mapping()
+
     # Start Player vs CPU game
-    #game.player_vs_cpu(smart_level=game.HIGH, player1=False)
+    game.player_vs_cpu(smart_level=game.MEDIUM, player1=True)
 
     # Player vs Player game
     """
