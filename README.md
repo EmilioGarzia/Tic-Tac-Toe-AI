@@ -20,8 +20,7 @@ This project is an educational implementation of the Tic-Tac-Toe game, featuring
 
 ## Features
 
-### AI Algorithms
-
+### AI Algorithms
 - **Minimax**: A brute-force algorithm that explores all possible moves to determine the optimal strategy.
     - $\text{Time Complexity} = O\left(b^d\right)$
     - $\text{Space Complexity} = O(bd)$
