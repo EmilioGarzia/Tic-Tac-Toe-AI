@@ -2,6 +2,9 @@
 **Table of contents**
 - [Tic-Tac-Toe: AI](#tic-tac-toe-ai)
 	- [Features](#features)
+		- [AI Algorithms](#ai-algorithms)
+		- [Uncertainty of the AI](#uncertainty-of-the-ai)
+		- [Game modes](#game-modes)
 	- [How to Run](#how-to-run)
 - [Clone the repo](#clone-the-repo)
 - [Open directory project](#open-directory-project)
@@ -30,7 +33,7 @@ This project is an educational implementation of the Tic-Tac-Toe game, featuring
 
 ℹ: $b$ is number of legal moves in that moment, $d$ is the max depth of the decision tree
 
-### Uncertainly of the AI
+### Uncertainty of the AI
 - **High**: Optimal moves are always chosen.
 - **Medium**: A mix of optimal and suboptimal moves.
 - **Low**: Randomized suboptimal moves to simulate uncertainty.
