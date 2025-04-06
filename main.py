@@ -1,6 +1,5 @@
 from tic_tac_toe import TicTacToe
 from argparse import ArgumentParser
-import debug_simulations as sim
 
 if __name__ == "__main__":
     game = TicTacToe()
