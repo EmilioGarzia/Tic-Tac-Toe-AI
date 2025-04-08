@@ -252,8 +252,8 @@ class TicTacToe:
     """
     Print mapping of the field
     """
-    print("Game's field mapping, use it to specify the coordinates of the cell!")
     def print_mapping(self):
+        print("Game's field mapping, use it to specify the coordinates of the cell!")
         i = 0
         for cells in self.field_state:
             j = 0
